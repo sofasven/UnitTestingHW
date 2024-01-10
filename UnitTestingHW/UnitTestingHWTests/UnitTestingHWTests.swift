@@ -9,28 +9,81 @@ import XCTest
 @testable import UnitTestingHW
 
 final class UnitTestingHWTests: XCTestCase {
-
+    
+    var sut: MathService!
+    
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        print("setUpWithError")
     }
-
+    override func setUp() {
+        super.setUp()
+        sut = MathService()
+        print("setUp")
+    }
+    
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        print("tearDownWithError")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    override func tearDown() {
+        super.tearDown()
+        sut = nil
+        print("tearDown")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    
+    // 1 = = = = = = = = = = = = =
+    
+    func testSumOfNumbers()  {
+        print("testSumOfNumbers")
+        //given (что дано)
+        let numberOne = 2
+        let numberTwo = 1
+        //when (что произошло)
+        let result = sut.sumOfNumbers(firstNumber: numberOne, secondNumber: numberTwo)
+        //then (что должно получиться)
+        XCTAssert(result - numberOne == numberTwo, "The numbers weren't summed")
+    }
+    
+    // 2 = = = = = = = = = = = = =
+    
+    func testMultiplicationOfNumbers() {
+        print("testMultiplicationOfNumbers")
+        //given (что дано)
+        let numberOne = 2
+        let numberTwo = 1
+        //when (что произошло)
+        let result = sut.multiplicationOfNumbers(firstNumber: numberOne, secondNumber: numberTwo)
+        //then (что должно получиться)
+        XCTAssert(result / numberOne == numberTwo, "The numbers weren't multiplied")
+    }
+    
+    // 3 = = = = = = = = = = = = =
+    
+    func testDivisionOfNumbers() throws {
+        print("testDivisionOfNumbers")
+        //given (что дано)
+        let numberOne = 8.0
+        let numberTwo = 2.0
+        //when (что произошло)
+        let result = try sut.divisionOfNumbers(firstNumber: numberOne, secondNumber: numberTwo)
+        //then (что должно получиться)
+        XCTAssert(result * numberTwo == numberOne, "The numbers don't divided correct")
+    }
+    
+    func testDivisionByZero() throws {
+        print("testDivisionByZero")
+        //given (что дано)
+        let numberOne = 8.0
+        let numberTwo = 2.0
+        //when (что произошло)
+        let result = try sut.divisionOfNumbers(firstNumber: numberOne, secondNumber: numberTwo)
+        //then (что должно получиться)
+        XCTAssertThrowsError(result, "Can not divide by zero") { error in
+            XCTAssertEqual(error as? Errors, Errors.canNotBeDividedByZero)
         }
     }
-
+    
+    func testPerformanceExample() throws {
+        self.measure {
+        }
+    }
 }
